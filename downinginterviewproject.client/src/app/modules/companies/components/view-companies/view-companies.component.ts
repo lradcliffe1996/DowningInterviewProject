@@ -12,7 +12,7 @@ export class ViewCompaniesComponent implements OnInit {
   public companies: Company[] = [];
   private companyApiService: CompanyApiService;
 
-  private constructor(
+  public constructor(
     private _companyApiService: CompanyApiService
   ) {
     this.companyApiService = _companyApiService;
@@ -24,7 +24,9 @@ export class ViewCompaniesComponent implements OnInit {
 
   public getCompanies(): void {
     this.companyApiService.getCompanies().subscribe({
-      next: (results) => { this.companies = results; },
+      next: (results) => {
+        this.companies = results.sort((a, b) => (a.companyName ?? '').toLowerCase().localeCompare((b.companyName ?? '').toLowerCase()));
+      },
       error: (error) => { console.error(error); }
     })
   }
