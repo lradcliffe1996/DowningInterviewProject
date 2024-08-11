@@ -3,4 +3,7 @@
 GET {{DowningInterviewProject.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
+GET {{DowningInterviewProject.Server_HostAddress}}/companies/
+Accept: application/json
+
 ###
