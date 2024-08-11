@@ -1,0 +1,20 @@
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Code</th>
+        <th scope="col">Current Share Price</th>
+        <th scope="col">Date Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of companies">
+        <td>{{ c.companyName }}</td>
+        <td>{{ c.code }}</td>
+        <td>{{ c.sharePrice | number: '0.0-5' }}</td>
+        <td>{{ c.createdDate | date:"dd'-'MMM'-'yyyy" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -7,4 +7,9 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\downinginterviewproject.client\browser\</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app\modules\companies\models\" />
+    <Folder Include="src\app\modules\companies\components\" />
+    <Folder Include="src\app\modules\companies\services\" />
+  </ItemGroup>
 </Project>
