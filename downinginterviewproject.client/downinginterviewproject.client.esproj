@@ -10,6 +10,5 @@
   <ItemGroup>
     <Folder Include="src\app\modules\companies\models\" />
     <Folder Include="src\app\modules\companies\components\" />
-    <Folder Include="src\app\modules\companies\services\" />
   </ItemGroup>
 </Project>

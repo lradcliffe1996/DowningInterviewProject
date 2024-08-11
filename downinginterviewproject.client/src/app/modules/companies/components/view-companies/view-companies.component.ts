@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Company } from '../../models/company';
+import { CompanyApiService } from '../../services/company-api-service/company-api.service';
 
 @Component({
   selector: 'app-view-companies',
@@ -10,9 +10,12 @@ import { Company } from '../../models/company';
 })
 export class ViewCompaniesComponent implements OnInit {
   public companies: Company[] = [];
+  private companyApiService: CompanyApiService;
 
-  public constructor(private http: HttpClient) {
-
+  private constructor(
+    private _companyApiService: CompanyApiService
+  ) {
+    this.companyApiService = _companyApiService;
   }
 
   public ngOnInit(): void {
@@ -20,11 +23,8 @@ export class ViewCompaniesComponent implements OnInit {
   }
 
   public getCompanies(): void {
-    this.http.get<Company[]>('/companies').subscribe({
-      next: (results) => {
-        this.companies = results;
-        console.log(this.companies);
-      },
+    this.companyApiService.getCompanies().subscribe({
+      next: (results) => { this.companies = results; },
       error: (error) => { console.error(error); }
     })
   }
