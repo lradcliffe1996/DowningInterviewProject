@@ -11,6 +11,6 @@ export class CompanyApiService {
   private constructor(private httpClient: HttpClient) { }
 
   public getCompanies(): Observable<Company[]> {
-    return this.httpClient.get<Company[]>('/companies');
+    return this.httpClient.get<Company[]>('/api/companies');
   }
 }

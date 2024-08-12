@@ -19,6 +19,9 @@
       <div *ngIf="companyForm.get('code')?.errors?.['pattern']">
         The code only accepts capital letters and numbers.
       </div>
+      <div *ngIf="companyForm.get('code')?.errors?.['codeExists']">
+        Code is already in database.
+      </div>
     </div>
     <div>
       <label for="sharePrice">Share Price:</label>
@@ -27,6 +30,6 @@
         Share price can only be numeric and include decimal points (up to 5 decimal points).
       </div>
     </div>
-    <button type="submit" [disabled]="!companyForm.valid">Add Company</button>
+    <button type="submit" [disabled]="!companyForm.valid">Save</button>
   </form>
 </div>

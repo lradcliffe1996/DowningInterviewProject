@@ -5,7 +5,7 @@ import { ViewCompaniesComponent } from './modules/companies/components/view-comp
 import { AddCompaniesComponent } from './modules/companies/components/add-companies/add-companies.component';
 
 const routes: Routes = [
-  { path: '', component: AddCompaniesComponent }
+  { path: '', component: ViewCompaniesComponent }
 ];
 
 @NgModule({

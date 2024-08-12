@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 namespace DowningInterviewProject.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CompaniesController : ControllerBase
     {
         private readonly ILogger<CompaniesController> _logger;
@@ -19,7 +19,7 @@ namespace DowningInterviewProject.Server.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet(Name = "GetCompanies")]
+        [HttpGet]
         public ActionResult<IEnumerable<Company>> Get() 
         {
             List<Company> companies = new List<Company>();
@@ -55,18 +55,6 @@ namespace DowningInterviewProject.Server.Controllers
             }
 
             return companies;
-
-            //var companies = new List<Company> {
-            //    new Company
-            //    {
-            //        Id = 0,
-            //        CompanyName = "Test",
-            //        CreatedDate = DateTime.Now,
-            //        Code = "TS",
-            //        SharePrice = (decimal?)3_000.5
-            //    }
-            //};
-            //return companies;
         }
     }
 }
