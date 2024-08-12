@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
+import { map, Observable, of } from 'rxjs';
+import { Company } from '../../models/company';
 
 @Component({
   selector: 'app-add-companies',
@@ -26,7 +28,7 @@ export class AddCompaniesComponent {
         Validators.required,
         Validators.maxLength(10),
         Validators.pattern('(^[A-Z0-9]*)')],
-        (control: AbstractControl) => this.validateCode(control)
+        [(control: AbstractControl) => this.validateCode(control)]
       ],
       sharePrice: ['', [
         Validators.pattern(/^\d(\.\d{0,5})?/)]
@@ -37,20 +39,28 @@ export class AddCompaniesComponent {
 
   public onSubmit(): void {
     console.log(
-      this.companyForm.value
+      this.companyForm
     )
   }
 
-  private validateCode(control: AbstractControl): ValidatorFn | undefined {
-    //this.companyApiService.getCompanyByCode(control.value).subscribe({
-    //  next: (result: any) => {
-    //    if (result.code === control.value) {
-    //      return { 'codeExists': true };
-    //    }
-    //    return { 'codeExists': false };
-    //  },
-    //  error: (error: any) => { console.error(error); }
-    //});
-    return undefined;
+  private validateCodeTest(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.companyApiService
+        .getCompanyByCode(control.value)
+        .pipe(
+          map((result: Company) =>
+            result.code === control.value ? { codeExists: true } : null
+          )
+        );
+    }
+  }
+
+  private validateCode(control: AbstractControl): void {
+    this.companyApiService.getCompanyByCode(control.value).subscribe({
+      next: (result: any) => {
+        result.code === control.value ? control.setErrors({ codeExists: true }) : null;
+      },
+      error: (error: any) => { console.error(error); }
+    });
   }
 }

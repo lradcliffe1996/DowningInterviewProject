@@ -19,7 +19,7 @@
       <div *ngIf="companyForm.get('code')?.errors?.['pattern']">
         The code only accepts capital letters and numbers.
       </div>
-      <div *ngIf="companyForm.get('code')?.errors?.['codeExists']">
+      <div *ngIf="companyForm.get('code')?.hasError('codeExists')">
         Code is already in database.
       </div>
     </div>

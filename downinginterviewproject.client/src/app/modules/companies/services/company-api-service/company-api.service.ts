@@ -13,4 +13,8 @@ export class CompanyApiService {
   public getCompanies(): Observable<Company[]> {
     return this.httpClient.get<Company[]>('/api/companies');
   }
+
+  public getCompanyByCode(code: string): Observable<Company> {
+    return this.httpClient.get<Company>('/api/companies/' + code);
+  }
 }

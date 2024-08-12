@@ -56,5 +56,41 @@ namespace DowningInterviewProject.Server.Controllers
 
             return companies;
         }
+
+        [Route("{code}")]
+        [HttpGet]
+        public ActionResult<Company> GetByCode([FromRoute] string code)
+        {
+            Company company = new Company();
+
+            string query = "SELECT TOP 1 * FROM Companies WHERE Code = @Code";
+            using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("AppConn")))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Code", code);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            company = new Company
+                            {
+                                Id = (int)reader["Id"],
+                                CompanyName = (string)reader["CompanyName"],
+                                CreatedDate = (DateTime)reader["CreatedDate"],
+                                Code = (string)reader["Code"],
+                                SharePrice = (decimal)reader["SharePrice"]
+                            };
+                        }
+                    }
+                }
+
+                conn.Close();
+            }
+
+            return company;
+        }
     }
 }
