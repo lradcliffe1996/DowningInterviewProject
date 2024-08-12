@@ -43,8 +43,7 @@ export class AddCompaniesComponent {
 
   private validateCode(): AsyncValidatorFn {
     return (control: AbstractControl):
-      | Promise<{ [key: string]: any } | null>
-      | Observable<{ [key: string]: any } | null> => {
+      Observable<{ [key: string]: any } | null> => {
       const controlValue = control.value;
       if (controlValue === null || controlValue.length === 0) {
         return of(null);
