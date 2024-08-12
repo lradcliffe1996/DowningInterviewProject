@@ -17,4 +17,8 @@ export class CompanyApiService {
   public getCompanyByCode(code: string): Observable<Company> {
     return this.httpClient.get<Company>('/api/companies/' + code);
   }
+
+  public addCompany(company: Company): Observable<void> {
+    return this.httpClient.post<void>('/api/companies', company);
+  }
 }

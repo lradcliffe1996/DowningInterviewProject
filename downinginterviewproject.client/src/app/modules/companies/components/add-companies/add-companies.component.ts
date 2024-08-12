@@ -30,15 +30,21 @@ export class AddCompaniesComponent {
         [this.validateCode()]
       ],
       sharePrice: ['', [
-        Validators.pattern(/^\d(\.\d{0,5})?/)]
+        Validators.pattern(/^\d/),
+        Validators.pattern(/(\.\d{0,5})?/)]
       ]
     });
   }
 
   public onSubmit(): void {
-    console.log(
-      this.companyForm
-    )
+    this.companyApiService.addCompany(this.companyForm.value).subscribe({
+      next: () => {
+        console.log('saved successfully');
+      },
+      error: (err) => {
+        console.log(err);
+      } 
+    })
   }
 
   private validateCode(): AsyncValidatorFn {

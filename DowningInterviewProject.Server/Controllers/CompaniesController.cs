@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 
 namespace DowningInterviewProject.Server.Controllers
 {
@@ -54,7 +55,7 @@ namespace DowningInterviewProject.Server.Controllers
                 );
             }
 
-            return companies;
+            return Ok(companies);
         }
 
         [Route("{code}")]
@@ -90,7 +91,43 @@ namespace DowningInterviewProject.Server.Controllers
                 conn.Close();
             }
 
-            return company;
+            return Ok(company);
+        }
+
+        [HttpPost]
+        public ActionResult AddCompany(Company company) 
+        {
+            try
+            {
+                string query =
+                "INSERT INTO Companies(CompanyName, Code, SharePrice, CreatedDate) " +
+                "VALUES(@CompanyName, @Code, @SharePrice, @CreatedDate)";
+
+                using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("AppConn")))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        // Assuming form always sends valid company name and code fields
+                        cmd.Parameters.AddWithValue("@CompanyName", company.CompanyName);
+                        cmd.Parameters.AddWithValue("@Code", company.Code);
+                        cmd.Parameters.AddWithValue("@SharePrice", company.SharePrice.HasValue ? company.SharePrice : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CreatedDate", new SqlDateTime(DateTime.Now));
+
+                        int result = cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+
+                return Created();
+            }
+            catch (SqlException sql)
+            {
+                // Return 400 with SQL error message
+                return BadRequest(sql.Message);
+            }
         }
     }
 }
