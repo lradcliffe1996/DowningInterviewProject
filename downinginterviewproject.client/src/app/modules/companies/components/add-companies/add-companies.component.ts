@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
-import { map, Observable, of } from 'rxjs';
+import { debounceTime, map, Observable, of, switchMap, take } from 'rxjs';
 import { Company } from '../../models/company';
 
 @Component({
@@ -12,11 +12,10 @@ import { Company } from '../../models/company';
 })
 export class AddCompaniesComponent {
   public companyForm: FormGroup;
-  private companyApiService: CompanyApiService;
 
   public constructor(
     private fb: FormBuilder,
-    private _companyApiService: CompanyApiService
+    private companyApiService: CompanyApiService
   ) {
     this.companyForm = this.fb.group({
       companyName: ['', [
@@ -28,13 +27,12 @@ export class AddCompaniesComponent {
         Validators.required,
         Validators.maxLength(10),
         Validators.pattern('(^[A-Z0-9]*)')],
-        [(control: AbstractControl) => this.validateCode(control)]
+        [this.validateCode()]
       ],
       sharePrice: ['', [
         Validators.pattern(/^\d(\.\d{0,5})?/)]
       ]
     });
-    this.companyApiService = _companyApiService;
   }
 
   public onSubmit(): void {
@@ -43,24 +41,27 @@ export class AddCompaniesComponent {
     )
   }
 
-  private validateCodeTest(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.companyApiService
-        .getCompanyByCode(control.value)
-        .pipe(
-          map((result: Company) =>
-            result.code === control.value ? { codeExists: true } : null
+  private validateCode(): AsyncValidatorFn {
+    return (control: AbstractControl):
+      | Promise<{ [key: string]: any } | null>
+      | Observable<{ [key: string]: any } | null> => {
+      const controlValue = control.value;
+      if (controlValue === null || controlValue.length === 0) {
+        return of(null);
+      } else {
+        return control.valueChanges.pipe(
+          // use debounce time to control rate of user input, take to use the first emitted by the observable 
+          debounceTime(250),
+          take(1),
+          switchMap(_ =>
+            this.companyApiService.getCompanyByCode(controlValue).pipe(
+              map(
+                result => result.code === controlValue ? { codeExists: true } : null 
+              )
+            )
           )
         );
+      }
     }
-  }
-
-  private validateCode(control: AbstractControl): void {
-    this.companyApiService.getCompanyByCode(control.value).subscribe({
-      next: (result: any) => {
-        result.code === control.value ? control.setErrors({ codeExists: true }) : null;
-      },
-      error: (error: any) => { console.error(error); }
-    });
   }
 }
