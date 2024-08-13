@@ -19,18 +19,18 @@ export class AddCompaniesComponent {
     private router: Router
   ) {
     this.companyForm = this.fb.group({
-      companyName: ['', [
+      companyName: [null, [
         Validators.required,
         Validators.maxLength(100),
         Validators.pattern('(^[a-zA-Z0-9!@#$&()\\-`.+,/\" ]*)')]
       ],
-      code: ['', [
+      code: [null, [
         Validators.required,
         Validators.maxLength(10),
         Validators.pattern('(^[A-Z0-9]*)')],
         [this.validateCode()]
       ],
-      sharePrice: ['', [
+      sharePrice: [null, [
         Validators.pattern(/^\d/),
         Validators.pattern(/(\.\d{0,5})?/)]
       ]
@@ -38,19 +38,17 @@ export class AddCompaniesComponent {
   }
 
   public onSubmit(): void {
-    //this.companyApiService.addCompany(this.companyForm.value).subscribe({
-    //  next: () => {
-    //    console.log('saved successfully');
-    //  },
-    //  error: (err) => {
-    //    console.log(err);
-    //  }
-    //})
-
-    this.router.navigate(
-      ['/view'],
-      { queryParams: { companyAdded: true } }
-    );
+    this.companyApiService.addCompany(this.companyForm.value).subscribe({
+      next: () => {
+        this.router.navigate(
+          ['/view'],
+          { queryParams: { companyAdded: true } }
+        );
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   private validateCode(): AsyncValidatorFn {

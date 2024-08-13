@@ -1,3 +1,4 @@
+<h3>View Companies</h3>
 <div *ngIf="companyAddedAlert" class="alert alert-success" role="alert">
   Company has been added successfully, please look at the table below for details.
 </div>
@@ -15,7 +16,7 @@
       <tr *ngFor="let c of companies">
         <td>{{ c.companyName }}</td>
         <td>{{ c.code }}</td>
-        <td>{{ c.sharePrice | number: '0.0-5' }}</td>
+        <td>{{ (c.sharePrice | number: '0.0-5') ?? 'N/A' }}</td>
         <td>{{ c.createdDate | date:"dd'-'MMM'-'yyyy" }}</td>
       </tr>
     </tbody>

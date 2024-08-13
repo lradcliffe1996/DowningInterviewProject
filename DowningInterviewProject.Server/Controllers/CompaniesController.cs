@@ -50,7 +50,7 @@ namespace DowningInterviewProject.Server.Controllers
                         CompanyName = (string)row["CompanyName"],
                         CreatedDate = (DateTime)row["CreatedDate"],
                         Code = (string)row["Code"],
-                        SharePrice = (decimal)row["SharePrice"]
+                        SharePrice = (row["SharePrice"] == DBNull.Value ? null : (decimal)row["SharePrice"])
                     }
                 );
             }
