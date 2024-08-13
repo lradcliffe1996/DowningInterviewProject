@@ -32,10 +32,8 @@ export class AddCompaniesComponent implements OnDestroy {
         Validators.pattern('(^[A-Z0-9]*)')],
         [this.validateCode()]
       ],
-      sharePrice: [null, [
-        Validators.pattern(/^\d/),
-        Validators.pattern(/(\.\d{0,5})?/)]
-      ]
+      // Regex to allow for n numbers before decimal, and up to 5 numbers after decimal
+      sharePrice: [null, [Validators.pattern(/^(0|[1-9]\d*)(\.\d{0,5})?$/)]]
     });
   }
 
