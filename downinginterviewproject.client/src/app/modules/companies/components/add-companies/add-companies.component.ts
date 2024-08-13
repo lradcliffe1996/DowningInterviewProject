@@ -12,6 +12,7 @@ import { CompanyApiService } from '../../services/company-api-service/company-ap
 })
 export class AddCompaniesComponent implements OnDestroy {
   public companyForm: FormGroup;
+  public submitError = false;
   private subscriptions: Subscription[] = [];
 
   public constructor(
@@ -45,12 +46,14 @@ export class AddCompaniesComponent implements OnDestroy {
   public onSubmit(): void {
     const companiesSub = this.companyApiService.addCompany(this.companyForm.value).subscribe({
       next: () => {
+        this.submitError = false;
         this.router.navigate(
           ['/view'],
           { queryParams: { companyAdded: true } }
         );
       },
       error: (err) => {
+        this.submitError = true;
         console.log(err);
       }
     });

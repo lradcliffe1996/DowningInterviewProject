@@ -1,5 +1,8 @@
 <h3>Add New Company</h3>
 <div>
+  <div *ngIf="submitError" class="alert alert-warning" role="alert">
+    Something has gone wrong when trying to add this company, please try again.
+  </div>
   <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="companyName">Company Name*:</label>
