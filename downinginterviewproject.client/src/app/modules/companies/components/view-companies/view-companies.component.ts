@@ -22,7 +22,7 @@ export class ViewCompaniesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     //Look at query params to see if company has been added
-    const routeSub = this.route.queryParamMap
+    const routeSub = this.route?.queryParamMap
       .subscribe((params: ParamMap) => {
         //this is the quickest way I know of to convert a string to a bool
         this.companyAddedAlert = JSON.parse(params.get('companyAdded') ?? 'false');

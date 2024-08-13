@@ -1,26 +1,28 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let httpMock: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      imports: [HttpClientTestingModule]
+      imports: [
+        RouterModule
+      ],
+      declarations: [
+        AppComponent
+      ]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    httpMock = TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
   });
 
-  afterEach(() => {
-    httpMock.verify();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });
