@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { debounceTime, map, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
-import { debounceTime, map, Observable, of, switchMap, take } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-companies',
   templateUrl: './add-companies.component.html',
   styleUrl: './add-companies.component.css'
 })
-export class AddCompaniesComponent {
+export class AddCompaniesComponent implements OnDestroy {
   public companyForm: FormGroup;
+  private subscriptions: Subscription[] = [];
 
   public constructor(
     private fb: FormBuilder,
@@ -37,8 +38,12 @@ export class AddCompaniesComponent {
     });
   }
 
+  public ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   public onSubmit(): void {
-    this.companyApiService.addCompany(this.companyForm.value).subscribe({
+    const companiesSub = this.companyApiService.addCompany(this.companyForm.value).subscribe({
       next: () => {
         this.router.navigate(
           ['/view'],
@@ -49,6 +54,8 @@ export class AddCompaniesComponent {
         console.log(err);
       }
     });
+
+    this.subscriptions.push(companiesSub);
   }
 
   private validateCode(): AsyncValidatorFn {
