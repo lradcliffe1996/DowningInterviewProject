@@ -3,7 +3,7 @@ import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationEr
 
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
 import { debounceTime, map, Observable, of, switchMap, take } from 'rxjs';
-import { Company } from '../../models/company';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-companies',
@@ -15,7 +15,8 @@ export class AddCompaniesComponent {
 
   public constructor(
     private fb: FormBuilder,
-    private companyApiService: CompanyApiService
+    private companyApiService: CompanyApiService,
+    private router: Router
   ) {
     this.companyForm = this.fb.group({
       companyName: ['', [
@@ -37,14 +38,19 @@ export class AddCompaniesComponent {
   }
 
   public onSubmit(): void {
-    this.companyApiService.addCompany(this.companyForm.value).subscribe({
-      next: () => {
-        console.log('saved successfully');
-      },
-      error: (err) => {
-        console.log(err);
-      } 
-    })
+    //this.companyApiService.addCompany(this.companyForm.value).subscribe({
+    //  next: () => {
+    //    console.log('saved successfully');
+    //  },
+    //  error: (err) => {
+    //    console.log(err);
+    //  }
+    //})
+
+    this.router.navigate(
+      ['/view'],
+      { queryParams: { companyAdded: true } }
+    );
   }
 
   private validateCode(): AsyncValidatorFn {

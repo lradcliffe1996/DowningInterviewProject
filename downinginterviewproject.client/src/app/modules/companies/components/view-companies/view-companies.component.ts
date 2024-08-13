@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Company } from '../../models/company';
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
@@ -10,15 +11,22 @@ import { CompanyApiService } from '../../services/company-api-service/company-ap
 })
 export class ViewCompaniesComponent implements OnInit {
   public companies: Company[] = [];
-  private companyApiService: CompanyApiService;
+  public companyAddedAlert = false;
 
   public constructor(
-    private _companyApiService: CompanyApiService
-  ) {
-    this.companyApiService = _companyApiService;
-  }
+    private companyApiService: CompanyApiService,
+    private route: ActivatedRoute
+  ) {}
 
   public ngOnInit(): void {
+    //Look at query params to see if company has been added
+    this.route.queryParamMap
+      .subscribe((params: ParamMap) => {
+          //this is the quickest way I know of to convert a string to a bool
+          this.companyAddedAlert = JSON.parse(params.get('companyAdded') ?? 'false');
+        }
+      )
+
     this.getCompanies();
   }
 

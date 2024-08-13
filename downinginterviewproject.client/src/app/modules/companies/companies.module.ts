@@ -4,15 +4,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ViewCompaniesComponent } from './components/view-companies/view-companies.component';
 import { AddCompaniesComponent } from './components/add-companies/add-companies.component';
+import { AppRoutingModule } from '../../app-routing.module';
+import { CompaniesHomeComponent } from './components/companies-home/companies-home.component';
 
 @NgModule({
   declarations: [
     ViewCompaniesComponent,
-    AddCompaniesComponent
+    AddCompaniesComponent,
+    CompaniesHomeComponent
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
   exports: [
     ViewCompaniesComponent
