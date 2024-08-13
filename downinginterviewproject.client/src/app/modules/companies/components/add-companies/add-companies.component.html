@@ -1,35 +1,35 @@
 <div>
   <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
-    <div>
+    <div class="form-group">
       <label for="companyName">Company Name*:</label>
-      <input id="companyName" type="text" formControlName="companyName" />
-      <div *ngIf="companyForm['controls']['companyName'].errors?.['maxlength']">
+      <input id="companyName" class="form-control" type="text" formControlName="companyName" />
+      <div *ngIf="companyForm['controls']['companyName'].errors?.['maxlength']" class="message">
         The maximum length allowed for the company name is 100 characters.
       </div>
-      <div *ngIf="companyForm.get('companyName')?.errors?.['pattern']">
+      <div *ngIf="companyForm.get('companyName')?.errors?.['pattern']" class="message">
         Company name can only include letters, numbers, spaces and special characters (e.g. !#$&()).
       </div>
     </div>
-    <div>
+    <div class="form-group">
       <label for="code">Code*:</label>
-      <input id="code" type="text" formControlName="code" />
-      <div *ngIf="companyForm.get('code')?.errors?.['maxlength']">
+      <input id="code" class="form-control" type="text" formControlName="code" />
+      <div *ngIf="companyForm.get('code')?.errors?.['maxlength']" class="message">
         The maximum length allowed for the code is 10 characters.
       </div>
-      <div *ngIf="companyForm.get('code')?.errors?.['pattern']">
+      <div *ngIf="companyForm.get('code')?.errors?.['pattern']" class="message">
         The code only accepts capital letters and numbers.
       </div>
-      <div *ngIf="companyForm.get('code')?.hasError('codeExists')">
+      <div *ngIf="companyForm.get('code')?.hasError('codeExists')" class="message">
         Code is already in database.
       </div>
     </div>
-    <div>
+    <div class="form-group">
       <label for="sharePrice">Share Price:</label>
-      <input id="sharePrice" type="text" formControlName="sharePrice" />
-      <div *ngIf="companyForm.get('sharePrice')?.errors?.['pattern']">
+      <input id="sharePrice" class="form-control" type="text" formControlName="sharePrice" />
+      <div *ngIf="companyForm.get('sharePrice')?.errors?.['pattern']" class="message">
         Share price can only be numeric and include decimal points (up to 5 decimal points).
       </div>
     </div>
-    <button type="submit" [disabled]="!companyForm.valid">Save</button>
+    <button type="submit" class="btn" [class.btn-primary]="companyForm.valid" [disabled]="!companyForm.valid">Save</button>
   </form>
 </div>

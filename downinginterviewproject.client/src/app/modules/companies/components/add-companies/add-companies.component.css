@@ -1,0 +1,14 @@
+form {
+    text-align: left;
+    margin-right: 0;
+    margin-left: 0;
+    padding: 1.5rem;
+    position: relative;
+    width: 50%;
+}
+
+.message {
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    color: darkred;
+}
