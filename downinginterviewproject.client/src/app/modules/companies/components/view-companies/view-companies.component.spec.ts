@@ -17,21 +17,21 @@ describe('ViewCompaniesComponent', () => {
       companyName: 'Apple',
       code: 'APPL',
       createdDate: new Date('01-01-2024'),
-      sharePrice: 10.44
+      sharePrice: undefined
     },
     {
       id: 2,
-      companyName: 'Banana',
-      code: 'BANA',
-      createdDate: new Date('01-01-2024'),
-      sharePrice: 8.743
-    },
-    {
-      id: 3,
       companyName: 'Coconut',
       code: 'COCO',
       createdDate: new Date('01-01-2024'),
       sharePrice: 15.2
+    },
+    {
+      id: 3,
+      companyName: 'Banana',
+      code: 'BANA',
+      createdDate: new Date('01-01-2024'),
+      sharePrice: 8.743
     },
   ];
 
@@ -52,5 +52,19 @@ describe('ViewCompaniesComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should sort company data alphabetically by company name', () => {
+    const companyNames = component.companies.map((c) => { return c.companyName ?? '' });
+    expect(companyNames).toEqual(['Apple', 'Banana', 'Coconut']);
+  });
+
+  it('should display format table cells correctly', () => {
+    const tableRow = fixture.nativeElement.querySelector('tbody').querySelectorAll('tr')[0];
+
+    expect(tableRow.cells[0].innerHTML).toEqual('Apple');
+    expect(tableRow.cells[1].innerHTML).toEqual('APPL');
+    expect(tableRow.cells[2].innerHTML).toEqual('N/A');
+    expect(tableRow.cells[3].innerHTML).toEqual('01-Jan-2024');
   });
 });
