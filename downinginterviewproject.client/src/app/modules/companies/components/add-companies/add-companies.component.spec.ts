@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddCompaniesComponent } from './add-companies.component';
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 describe('AddCompaniesComponent', () => {
   let component: AddCompaniesComponent;
