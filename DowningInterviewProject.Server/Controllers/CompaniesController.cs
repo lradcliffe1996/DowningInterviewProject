@@ -31,7 +31,7 @@ namespace DowningInterviewProject.Server.Controllers
         {
             try
             {
-                company.CreatedDate = DateTime.Now;
+                company.CreatedDate = DateTime.UtcNow;
                 context.Companies.Add(company);
                 context.SaveChanges();
                 return Created();
