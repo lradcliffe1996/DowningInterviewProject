@@ -36,10 +36,11 @@ namespace DowningInterviewProject.Server.Controllers
                 context.SaveChanges();
                 return Created();
             }
-            catch (SqlException sql)
+            catch (Exception ex)
             {
-                // Return 400 with SQL error message
-                return BadRequest(sql.Message);
+                // Return 400 with exception. It was a toss up in my mind to use either 400 or 422, but I feel
+                // 400 is more encompassing as 422 relates to a request body error only.
+                return BadRequest(ex);
             }
         }
     }
