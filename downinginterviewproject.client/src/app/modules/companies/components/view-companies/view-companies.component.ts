@@ -41,6 +41,7 @@ export class ViewCompaniesComponent implements OnInit, OnDestroy {
   public getCompanies(): void {
     const companiesSub = this.companyApiService.getCompanies().subscribe({
       next: (results) => {
+        // Use localecompare to sort strings alphabetically
         this.companies = results.sort((a, b) => (a.companyName ?? '').toLowerCase().localeCompare((b.companyName ?? '').toLowerCase()));
       },
       error: (error) => { console.error(error); }

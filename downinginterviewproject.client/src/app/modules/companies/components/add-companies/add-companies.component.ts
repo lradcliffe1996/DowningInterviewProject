@@ -24,11 +24,13 @@ export class AddCompaniesComponent implements OnDestroy {
       companyName: [null, [
         Validators.required,
         Validators.maxLength(100),
+        // Regex to allow letters (uper and lowercase), numbers and specified special chars
         Validators.pattern('(^[a-zA-Z0-9!@#$&()\\-`.+,/\" ]*)')]
       ],
       code: [null, [
         Validators.required,
         Validators.maxLength(10),
+        // Regex to allow uppercase letters and numbers
         Validators.pattern('(^[A-Z0-9]*)')],
         [this.validateCode()]
       ],
