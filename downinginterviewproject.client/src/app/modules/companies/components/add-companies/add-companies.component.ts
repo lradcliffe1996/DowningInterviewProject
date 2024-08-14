@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, map, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { debounceTime, map, Observable, Subscription, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { CompanyApiService } from '../../services/company-api-service/company-api.service';
@@ -52,7 +52,7 @@ export class AddCompaniesComponent implements OnDestroy {
       },
       error: (err) => {
         this.submitError = true;
-        console.log(err);
+        console.error(err);
       }
     });
 
@@ -63,22 +63,18 @@ export class AddCompaniesComponent implements OnDestroy {
     return (control: AbstractControl):
       Observable<{ [key: string]: any } | null> => {
       const controlValue = control.value;
-      if (controlValue === null || controlValue.length === 0) {
-        return of(null);
-      } else {
-        return control.valueChanges.pipe(
-          // use debounce time to control rate of user input, take to use the first emitted by the observable 
-          debounceTime(250),
-          take(1),
-          switchMap(_ =>
-            this.companyApiService.getCompanyByCode(controlValue).pipe(
-              map(
-                result => result.code === controlValue ? { codeExists: true } : null 
-              )
+      return control.valueChanges.pipe(
+        // use debounce time to control rate of user input, take to use the first emitted by the observable 
+        debounceTime(250),
+        take(1),
+        switchMap(_ =>
+          this.companyApiService.getCompanyByCode(controlValue).pipe(
+            map(
+              result => result && result.code === controlValue ? { codeExists: true } : null
             )
           )
-        );
-      }
+        )
+      );
     }
   }
 }

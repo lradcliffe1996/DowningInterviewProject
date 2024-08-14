@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DowningInterviewProject.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DowningInterviewProject.Server.Models;
+namespace DowningInterviewProject.Server;
 
 public partial class DowningInvestmentDatabaseContext : DbContext
 {
@@ -20,7 +19,6 @@ public partial class DowningInvestmentDatabaseContext : DbContext
     public virtual DbSet<Investor> Investors { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=Downing.Investment.Database;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
